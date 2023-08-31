@@ -136,6 +136,12 @@ void Interface()
 void leaderboard()
 {
     draw_background(0xffffff);
-    
 
+
+}
+
+//结束界面
+void gameover()
+{
+    
 }

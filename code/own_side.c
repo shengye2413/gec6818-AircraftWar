@@ -14,12 +14,21 @@ void *our_air()
         x=end_x;
         y=end_y;
         cannonball=y+50;
-        for(int c=x+85;c<800;c++)
+        while (x<800)
         {
-            draw_pixel(c,cannonball,0xff00ff);
+            ball_track(x,cannonball);
+            x++;
         }
+        
     }
 
 }
 
-
+//炮弹轨迹
+void ball_track(int fire_x,int fire_y)
+{
+    for(int i=fire_x;i<fire_x+10;fire_x++)
+        {
+            draw_pixel(i,fire_y,0xff00ff);
+        }
+}
