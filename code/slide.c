@@ -19,6 +19,11 @@ void open_file()
     }
 }
  
+//关闭触摸屏文件
+void close_file()
+{
+    fclose(abs_screen);
+}
 
 //计算点击位置
 int direction()
@@ -66,7 +71,8 @@ int direction()
             start_y=-1;
         }
     }
-        
+    close_file();
+
 } 
 
 
@@ -78,34 +84,23 @@ int real_time_location()
     //获取触控屏幕信息
     struct input_event ev;
 
-    //定义起始和终点位置
-    int start_x=end_x,start_y=end_y;
-    if(ev.type==EV_KEY&&ev.code==BTN_TOUCH&&ev.value==1)
-    {
-    //记录当前位置，start记录滑动开始位置 
-        if(ev.type==EV_ABS)
-        {
-            if(ev.code==ABS_X)
+    while(1)
+	{	
+        // 判断读取的数据大小是否正确
+        fread(&ev,sizeof(ev),1,abs_screen);
+		if(ev.type==EV_ABS)//是触摸屏驱动
+		{
+			if(ev.code==ABS_X)//x坐标
+				end_x=ev.value*0.78;
+			if(ev.code==ABS_Y)//y坐标
+				end_y=ev.value*0.78;
+            if(end_x >=0 && end_y>=0 && end_x<=650 && end_y <=380)
+            break;
+            if(end_x >=650 && end_y>=380)
             {
-                if(start_x==end_x)
-                start_x=ev.value*0.78;
-                end_x=ev.value*0.78;
+                end_x=end_x-100;
+                end_y=end_y-100;
             }
-            else if(ev.code==ABS_Y)
-            {
-                if(start_y==end_y)
-                start_y=ev.value*0.78;
-                end_y=ev.value*0.78;
-            }
-            
-        }
+		}
     }
-    if(ev.type==EV_KEY&&ev.code==BTN_TOUCH&&ev.value==0)
-    fclose(abs_screen);
-    return 0;
-    /**判断手指是否离开屏幕
-     * - ev.type == EV_KEY: 检查事件类型是否为按键事件EV_KEY
-     * - ev.code == BTN_TOUCH: 检查按键代码是否为触摸屏按键代码BTN_TOUCH
-     * - ev.value == 0: 检查按键值是否为0,在触摸屏上,0表示释放,1表示按下
-    */      
 }

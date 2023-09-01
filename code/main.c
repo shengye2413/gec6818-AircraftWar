@@ -71,15 +71,17 @@ int main()
                 //我方
                 else
                 {
+                    //飞机初始位置
                     draw_picture(0,190,"./ourair.bmp");
-                    while (direction()==0)
+                    while (real_time_location())
                     {
+                        //清除初始位置的飞机
+                        draw_picture(0,190,"./black.bmp");
                         int status;
                         pid_t result = waitpid(pid, &status, WNOHANG);
                         if(result==0)
                         {
                             our_air();
-                            
                         }
                         else if(result==pid)
                         {
@@ -87,10 +89,9 @@ int main()
                             exit(0);
                         }
                          
+                        close_file();
                     }
-                    
-                    
-                    
+
                 }
 
             }

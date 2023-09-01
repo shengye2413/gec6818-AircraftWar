@@ -11,7 +11,6 @@ void *our_air()
     x=end_x;
     y=end_y;
     cannonball=y+50;  
-
 }
 
 //炮弹轨迹

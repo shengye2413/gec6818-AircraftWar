@@ -8,4 +8,11 @@ void open_file();
 //计算点击位置
 int direction();
 
+//关闭触摸屏文件
+void close_file();
+
+
+//获取实时位置
+int real_time_location();
+
 #endif

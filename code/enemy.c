@@ -29,8 +29,8 @@ void *enemy_air()
     if(x==0)
     {
         draw_picture(0,j,"./enemy_end.bmp");
-        exit(0);
-        //pthread_exit(NULL);
+        //exit(0);
+        pthread_exit(NULL);
     }
     
 }
