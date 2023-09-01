@@ -5,22 +5,12 @@
 //我方飞机
 void *our_air()
 {
-    int x=0,y=190;
-    draw_picture(x,y,"./ourair.bmp");
-    while (direction()==0 && end_x>0 && end_x<750 && end_y<380)
-    {
-        draw_picture(x,y,"./black.bmp");
-        draw_picture(end_x,end_y,"./ourair.bmp");
-        x=end_x;
-        y=end_y;
-        cannonball=y+50;
-        // while (x<800)
-        // {
-        //     ball_track(x,cannonball);
-        //     x++;
-        // }
-        
-    }
+    static int x,y;
+    draw_picture(x,y,"./black.bmp");
+    draw_picture(end_x,end_y,"./ourair.bmp");
+    x=end_x;
+    y=end_y;
+    cannonball=y+50;  
 
 }
 

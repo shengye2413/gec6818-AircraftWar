@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <wait.h>
 
 
 #include "slide.h"
@@ -16,7 +17,7 @@ int main()
 {
     //主界面
     Main_Interface();
-    while (1)
+    //while (1)
     {
         //主界面点击选择
         if(direction()==0)
@@ -39,7 +40,8 @@ int main()
             //开始游戏
             else if(end_x>70 && end_x<200 &&end_y>100 &&end_y<300)
             {
-                Interface();
+                
+                Interface();//游戏界面
                 //创建两个进程，分别表示敌我双方
                 pid_t pid=fork();
                 //敌方
@@ -58,6 +60,7 @@ int main()
                             pthread_create(&tid[i], NULL, enemy_air, NULL);
                             sleep(1);
                         }
+                        //回收线程资源
                         for (int i = 0; i < MAX; i++) 
                         {
                             pthread_join(tid[i], NULL);
@@ -65,11 +68,29 @@ int main()
                         
                     }
                 }
+                //我方
                 else
                 {
-                    our_air();
-                    //wait(NULL);
-                    //exit(0);
+                    draw_picture(0,190,"./ourair.bmp");
+                    while (direction()==0)
+                    {
+                        int status;
+                        pid_t result = waitpid(pid, &status, WNOHANG);
+                        if(result==0)
+                        {
+                            our_air();
+                            
+                        }
+                        else if(result==pid)
+                        {
+                            if(WIFEXITED(status))
+                            exit(0);
+                        }
+                         
+                    }
+                    
+                    
+                    
                 }
 
             }
