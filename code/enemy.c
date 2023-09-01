@@ -10,8 +10,8 @@
 //敌方飞机
 void *enemy_air()
 {
-    int i=0;
-    //四路，飞机随机生成在某一路
+
+    //六路，飞机随机生成在某一路
     int j,x=650;
     j=rand()%7*60;
         cannonball=240;
@@ -22,13 +22,8 @@ void *enemy_air()
         draw_picture(x+80,j,"./enemy_black.bmp");
         x--;
         draw_picture(x,j,"./enemy.bmp");
-        usleep(300);
-        if(j<cannonball+60 && j>cannonball-60)
-        {
-            draw_picture(0,j,"./enemy_end.bmp");
-            pthread_exit(NULL);
-            break;
-        }
+        usleep(0);
+        
     }
     //当飞机飞到终点
     if(x==0)

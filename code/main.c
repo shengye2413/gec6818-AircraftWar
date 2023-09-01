@@ -40,22 +40,36 @@ int main()
             else if(end_x>70 && end_x<200 &&end_y>100 &&end_y<300)
             {
                 Interface();
+                //创建两个进程，分别表示敌我双方
                 pid_t pid=fork();
+                //敌方
                 if(pid==0)
                 {
+                    //循环创建敌机
                     while(1)
                     {
-                        pthread_t tid;
-                        pthread_create(&tid,NULL,enemy_air,NULL);
-                    
-                        sleep(1);
+                        //最大同时生成6架敌机
+                        pthread_t tid[6];
+                        int MAX;
+                        //随机生成敌机数量
+                        MAX=rand()%6+1;
+                        for (int i = 0; i < MAX; i++) 
+                        {
+                            pthread_create(&tid[i], NULL, enemy_air, NULL);
+                            sleep(1);
+                        }
+                        for (int i = 0; i < MAX; i++) 
+                        {
+                            pthread_join(tid[i], NULL);
+                        }
+                        
                     }
                 }
                 else
                 {
                     our_air();
-                    wait(NULL);
-                    exit(0);
+                    //wait(NULL);
+                    //exit(0);
                 }
 
             }
