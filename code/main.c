@@ -78,17 +78,21 @@ int main()
                         //清除初始位置的飞机
                         draw_picture(0,190,"./black.bmp");
                         int status;
-                        pid_t result = waitpid(pid, &status, WNOHANG);
+                        pid_t result = waitpid(pid, &status, WNOHANG);//非阻塞等待
+                        //子进程未终止
                         if(result==0)
                         {
                             our_air();
+                            pthread_t tid;
+                            pthread_create(&tid,NULL,ball_track,NULL);
+                            pthread_join(tid,NULL);
                         }
+                        //子进程终止结束父进程
                         else if(result==pid)
                         {
                             if(WIFEXITED(status))
                             exit(0);
-                        }
-                         
+                        } 
                         close_file();
                     }
 

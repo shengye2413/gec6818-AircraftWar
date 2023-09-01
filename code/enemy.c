@@ -14,7 +14,6 @@ void *enemy_air()
     //六路，飞机随机生成在某一路
     int j,x=650;
     j=rand()%7*60;
-        cannonball=240;
     draw_picture(650,j,"./enemy.bmp");
     //飞机向前飞
     while (x)

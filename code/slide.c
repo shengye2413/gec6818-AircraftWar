@@ -96,6 +96,7 @@ int real_time_location()
 				end_y=ev.value*0.78;
             if(end_x >=0 && end_y>=0 && end_x<=650 && end_y <=380)
             break;
+            //限制飞机不要超出屏幕 
             if(end_x >=650 && end_y>=380)
             {
                 end_x=end_x-100;

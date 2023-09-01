@@ -5,8 +5,7 @@
 void *our_air();
 
 //炮弹轨迹
-void ball_track(int fire_x,int fire_y);
+void *ball_track();
 
-int cannonball;
 
 #endif
