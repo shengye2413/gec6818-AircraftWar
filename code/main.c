@@ -83,7 +83,6 @@ int main()
                         if(result==0)
                         {
                             our_air();
-                            //usleep(500);
                             pthread_t tid;
                             pthread_create(&tid,NULL,ball_track,NULL);
                             pthread_join(tid,NULL);
