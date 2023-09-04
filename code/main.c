@@ -6,7 +6,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <wait.h>
-
+#include <signal.h>
 
 #include "slide.h"
 #include "background.h"
@@ -16,8 +16,9 @@
 int main()
 {
     //主界面
+    MAIN:
     Main_Interface();
-    //while (1)
+    while (1)
     {
         //主界面点击选择
         if(direction()==0)
@@ -34,13 +35,13 @@ int main()
                 leaderboard();
                 while(direction()==0)
                 {
-
+                    goto MAIN;
                 }
             }
             //开始游戏
             else if(end_x>70 && end_x<200 &&end_y>100 &&end_y<300)
             {
-                
+                again:
                 Interface();//游戏界面
                 //创建两个进程，分别表示敌我双方
                 pid_t pid=fork();
@@ -48,6 +49,7 @@ int main()
                 if(pid==0)
                 {
                     //循环创建敌机
+                    
                     while(1)
                     {
                         //最大同时生成6架敌机
@@ -82,16 +84,43 @@ int main()
                         //子进程未终止
                         if(result==0)
                         {
-                            our_air();
-                            pthread_t tid;
-                            pthread_create(&tid,NULL,ball_track,NULL);
-                            pthread_join(tid,NULL);
+                            //游戏运行
+                            if (end_x>0 && end_x<750 && end_y>0 && end_y<480)
+                            {
+                                our_air();
+                                pthread_t tid;
+                                pthread_create(&tid,NULL,ball_track,NULL);
+                                pthread_join(tid,NULL);
+                            }
+                            //返回主界面
+                            else if (end_x>750 && end_x<800 && end_y>0 && end_y<50)
+                            {
+                                kill(pid,SIGKILL);
+                                goto MAIN;
+                            }
+                            //暂停游戏
+                            else if (end_x>750 && end_x<800 && end_y>400 && end_y<480)
+                            {
+                                kill(pid, SIGSTOP); // 发送SIGSTOP信号暂停子进程
+                                //waitpid(pid, &status, WNOHANG);
+                                if(direction()==0)
+                                {
+                                    kill(pid, SIGUSR1); // 发送SIGUSR1信号唤醒子进程
+                                }
+                            }
                         }
                         //子进程终止结束父进程
                         else if(result==pid)
                         {
                             if(WIFEXITED(status))
-                            exit(0);
+                            gameover();
+                            while(direction()==0)
+                            {
+                                if(end_x>50 && end_x<=200)
+                                goto MAIN;
+                                else if(end_x>220 && end_x<=320)
+                                goto again;
+                            }
                         } 
                         close_file();
                     }

@@ -143,5 +143,5 @@ void leaderboard()
 //结束界面
 void gameover()
 {
-    
+    draw_picture(40,0,"./gameover.bmp");
 }

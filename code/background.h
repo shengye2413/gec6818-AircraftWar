@@ -23,4 +23,7 @@ void Interface();
 //排行榜界面
 void leaderboard();
 
+//结束界面
+void gameover();
+
 #endif 

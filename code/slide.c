@@ -83,7 +83,6 @@ int real_time_location()
     open_file();
     //获取触控屏幕信息
     struct input_event ev;
-
     while(1)
 	{	
         // 判断读取的数据大小是否正确
@@ -94,14 +93,18 @@ int real_time_location()
 				end_x=ev.value*0.78;
 			if(ev.code==ABS_Y)//y坐标
 				end_y=ev.value*0.78;
-            if(end_x >=0 && end_y>=0 && end_x<=650 && end_y <=380)
-            break;
             //限制飞机不要超出屏幕 
-            if(end_x >=650 && end_y>=380)
+            if(end_y>=380 && end_x<750)
             {
-                end_x=end_x-100;
-                end_y=end_y-100;
+                
+                end_y=end_y-(100-(480-end_y));
             }
+            else if(end_x>750 && end_x<800 && end_y>50 && end_y<400)
+            {
+                end_x=end_x-(150-(800-end_y));
+            }
+            else
+            break;
 		}
     }
 }
