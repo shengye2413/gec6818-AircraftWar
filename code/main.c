@@ -60,7 +60,6 @@ int main()
                 if(pid==0)
                 {
                     //循环创建敌机
-                    
                     while(1)
                     {
                         //最大同时生成6架敌机
@@ -71,7 +70,7 @@ int main()
                         for (int i = 0; i < MAX; i++) 
                         {
                             pthread_create(&tid[i], NULL, enemy_air, NULL);
-                            sleep(1);
+                            sleep(1.2);
                         }
                         //回收线程资源
                         for (int i = 0; i < MAX; i++) 
@@ -99,6 +98,7 @@ int main()
                             //游戏运行
                             if (end_x>0 && end_x<750 && end_y>0 && end_y<480)
                             {
+                                //飞机与炮弹线程
                                 our_air();
                                 pthread_t tid;
                                 pthread_create(&tid,NULL,ball_track,NULL);
@@ -115,6 +115,7 @@ int main()
                             {
                                 draw_picture(350,140,"./continue.bmp");
                                 kill(pid, SIGSTOP); // 发送SIGSTOP信号暂停子进程
+                                //获取到点击事件继续游戏
                                 if(direction()==0)
                                 {
                                     kill(pid, SIGCONT); // 发送SIGUSR1信号唤醒子进程
@@ -125,10 +126,12 @@ int main()
                         //子进程终止结束父进程
                         else if(result==pid)
                         {
+                            //如果子进程结束游戏结束
                             if(WIFEXITED(status))
                             gameover();
                             while(direction()==0)
                             {
+                                //返回主界面
                                 if(end_x>50 && end_x<=200)
                                 goto MAIN;
                                 else if(end_x>220 && end_x<=320)
@@ -145,6 +148,10 @@ int main()
         }
         
     }
-     
+    // 解除映射
+    shmdt(shm_p);
+
+    // 关掉
+    shmctl(shm_id,IPC_RMID,NULL);
     return 0;
 }

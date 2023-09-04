@@ -5,6 +5,7 @@
 #include "own_side.h"
 #include "background.h"
 #include "slide.h"
+
 //敌方飞机
 void *enemy_air()
 {
@@ -28,7 +29,7 @@ void *enemy_air()
         x--;
         //更新敌机位置
         draw_picture(x,j,"./enemy.bmp");
-        usleep(10000);
+        usleep(1000);
     }
     
     //当飞机飞到终点

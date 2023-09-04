@@ -8,6 +8,7 @@
 #include <sys/mman.h>
 #include <stdlib.h>
 #include "background.h"
+#include "enemy.h"
 
 /**
  * 这个结构体用于描述帧缓冲设备的屏幕信息,包括:

@@ -101,15 +101,15 @@ int real_time_location()
             //限制飞机不要超出屏幕
             if (x_ready && y_ready)
             {
-                if (end_y >= 380 && end_x < 750)
-                {
-                    end_y = end_y - (100 - (480 - end_y));
-                }
-                else if (end_x > 750 && end_x < 800 && end_y > 50 && end_y < 400)
-                {
-                    end_x = end_x - (150 - (800 - end_y));
-                }
-                else
+                // if (end_y >= 380 && end_x < 750)
+                // {
+                //     end_y = end_y - (100 - (480 - end_y));
+                // }
+                // else if (end_x > 750 && end_x < 800 && end_y > 50 && end_y < 400)
+                // {
+                //     end_x = end_x - (150 - (800 - end_y));
+                // }
+                // else
                 {
                     break;
                 }
