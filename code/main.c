@@ -4,17 +4,28 @@
 #include <pthread.h>
 #include <unistd.h>
 #include <sys/types.h>
+#include <sys/ipc.h>
+#include <sys/shm.h>
 #include <sys/wait.h>
 #include <wait.h>
 #include <signal.h>
-
 #include "slide.h"
 #include "background.h"
 #include "own_side.h"
 #include "enemy.h"
-
+#define IPC_PATH ("./")
+#define IPC_CODE (20230826)
+int shmid;
 int main()
-{
+{ 
+    // 创建System V IPC设施的key
+    key_t key = ftok(IPC_PATH,IPC_CODE);
+
+    // 创建或打开一个共享内存
+    int shm_id = shmget(key,128,IPC_CREAT|0600);
+
+    // 映射共享内存
+    shm_p = shmat(shm_id,NULL,0);
     //主界面
     MAIN:
     Main_Interface();
@@ -77,6 +88,7 @@ int main()
                     draw_picture(0,190,"./ourair.bmp");
                     while (real_time_location())
                     {
+                        *shm_p=end_y;
                         //清除初始位置的飞机
                         draw_picture(0,190,"./black.bmp");
                         int status;
