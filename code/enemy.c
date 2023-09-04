@@ -27,7 +27,7 @@ void *enemy_air()
         x--;
         //更新敌机位置
         draw_picture(x,j,"./enemy.bmp");
-        usleep(300);
+        usleep(10000);
     }
     
     //当飞机飞到终点

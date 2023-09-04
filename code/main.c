@@ -101,11 +101,12 @@ int main()
                             //暂停游戏
                             else if (end_x>750 && end_x<800 && end_y>400 && end_y<480)
                             {
+                                draw_picture(350,140,"./continue.bmp");
                                 kill(pid, SIGSTOP); // 发送SIGSTOP信号暂停子进程
-                                //waitpid(pid, &status, WNOHANG);
                                 if(direction()==0)
                                 {
-                                    kill(pid, SIGUSR1); // 发送SIGUSR1信号唤醒子进程
+                                    kill(pid, SIGCONT); // 发送SIGUSR1信号唤醒子进程
+                                    draw_picture(0,0,"./Interface.bmp");
                                 }
                             }
                         }

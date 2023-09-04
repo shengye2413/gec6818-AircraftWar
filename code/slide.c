@@ -75,36 +75,45 @@ int direction()
 
 } 
 
-
-//获取实时位置
 int real_time_location()
 {
-    //每次读取都要打开触摸屏文件
     open_file();
-    //获取触控屏幕信息
     struct input_event ev;
-    while(1)
-	{	
-        // 判断读取的数据大小是否正确
-        fread(&ev,sizeof(ev),1,abs_screen);
-		if(ev.type==EV_ABS)//是触摸屏驱动
-		{
-			if(ev.code==ABS_X)//x坐标
-				end_x=ev.value*0.78;
-			if(ev.code==ABS_Y)//y坐标
-				end_y=ev.value*0.78;
-            //限制飞机不要超出屏幕 
-            if(end_y>=380 && end_x<750)
+    int x_ready = 0; // 标记 x 坐标是否已准备好
+    int y_ready = 0; // 标记 y 坐标是否已准备好
+
+    while (!x_ready || !y_ready)
+    {
+        fread(&ev, sizeof(ev), 1, abs_screen);
+
+        if (ev.type == EV_ABS)
+        {
+            if (ev.code == ABS_X)
             {
-                
-                end_y=end_y-(100-(480-end_y));
+                end_x = ev.value * 0.78;
+                x_ready = 1; // x 坐标已准备好
             }
-            else if(end_x>750 && end_x<800 && end_y>50 && end_y<400)
+            else if (ev.code == ABS_Y)
             {
-                end_x=end_x-(150-(800-end_y));
+                end_y = ev.value * 0.78;
+                y_ready = 1; // y 坐标已准备好
             }
-            else
-            break;
-		}
+            //限制飞机不要超出屏幕
+            if (x_ready && y_ready)
+            {
+                if (end_y >= 380 && end_x < 750)
+                {
+                    end_y = end_y - (100 - (480 - end_y));
+                }
+                else if (end_x > 750 && end_x < 800 && end_y > 50 && end_y < 400)
+                {
+                    end_x = end_x - (150 - (800 - end_y));
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
     }
 }
