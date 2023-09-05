@@ -16,18 +16,23 @@
 #define IPC_PATH ("./")
 #define IPC_CODE1 (20230826)
 #define IPC_CODE2 (20230904)
+#define IPC_CODE3 (20230905)
 int shmid;
 int main()
 { 
     // 创建System V IPC设施的key
     key_t key1 = ftok(IPC_PATH,IPC_CODE1);
     key_t key2 = ftok(IPC_PATH,IPC_CODE2);
+    key_t key3 = ftok(IPC_PATH,IPC_CODE3);
     // 创建或打开一个共享内存
     int shm_id1 = shmget(key1,128,IPC_CREAT|0600);
     int shm_id2 = shmget(key2,128,IPC_CREAT|0600);
+    int shm_id3 = shmget(key3,128,IPC_CREAT|0600);
     // 映射共享内存
     shm_px = shmat(shm_id1,NULL,0);
     shm_py = shmat(shm_id2,NULL,0);
+    shm_p_num = shmat(shm_id3,NULL,0);
+    
     //主界面
     MAIN:
     Main_Interface();
@@ -61,6 +66,7 @@ int main()
                 //敌方
                 if(pid==0)
                 {
+                    num=0;
                     //循环创建敌机
                     while(1)
                     {
@@ -72,6 +78,7 @@ int main()
                         for (int i = 0; i < MAX; i++) 
                         {
                             pthread_create(&tid[i], NULL, enemy_air, NULL);
+                            *shm_p_num =num;
                             sleep(1.2);
                         }
                         //回收线程资源
@@ -79,8 +86,8 @@ int main()
                         {
                             pthread_join(tid[i], NULL);
                         }
-                        
                     }
+                    
                 }
                 //我方
                 else
@@ -131,7 +138,17 @@ int main()
                         {
                             //如果子进程结束游戏结束
                             if(WIFEXITED(status))
-                            gameover();
+                            {
+                                printf("\n%d\n",*shm_p_num);
+                                char buf[4];
+                                FILE* fd=fopen("./1.txt","a+");
+                                snprintf(buf,sizeof(buf),"%.3d",*shm_p_num);
+                                fputs(buf,fd);
+                                fputc('\n',fd);
+                                fclose(fd);
+                                gameover();
+                            }
+                            
                             while(direction()==0)
                             {
                                 //返回主界面

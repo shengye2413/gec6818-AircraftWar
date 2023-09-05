@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <pthread.h>
+#include <stdio.h>
 #include "enemy.h"
 #include "own_side.h"
 #include "background.h"
@@ -45,6 +46,9 @@ void *enemy_air()
     }
     else
     {
+        //记录摧毁敌机数
+        num++;
+        printf("%d\n",num);
         pthread_exit(NULL);
     }
 }

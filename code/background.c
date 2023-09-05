@@ -136,9 +136,7 @@ void Interface()
 //排行榜界面
 void leaderboard()
 {
-    draw_background(0xffffff);
-
-
+    draw_picture(0,0,"./leaderboard.bmp");
 }
 
 //结束界面
