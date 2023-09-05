@@ -78,14 +78,15 @@ int main()
                         for (int i = 0; i < MAX; i++) 
                         {
                             pthread_create(&tid[i], NULL, enemy_air, NULL);
-                            *shm_p_num =num;
                             sleep(1.2);
                         }
+                        
                         //回收线程资源
                         for (int i = 0; i < MAX; i++) 
                         {
                             pthread_join(tid[i], NULL);
                         }
+                        //*shm_p_num =num;
                     }
                     
                 }
@@ -139,7 +140,6 @@ int main()
                             //如果子进程结束游戏结束
                             if(WIFEXITED(status))
                             {
-                                printf("\n%d\n",*shm_p_num);
                                 char buf[4];
                                 FILE* fd=fopen("./1.txt","a+");
                                 snprintf(buf,sizeof(buf),"%.3d",*shm_p_num);

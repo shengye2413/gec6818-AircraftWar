@@ -48,6 +48,7 @@ void *enemy_air()
     {
         //记录摧毁敌机数
         num++;
+        *shm_p_num =num;
         printf("%d\n",num);
         pthread_exit(NULL);
     }
