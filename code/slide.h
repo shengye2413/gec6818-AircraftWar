@@ -2,7 +2,8 @@
 #define __SLIDE_H__
 
 int end_x,end_y;
-int *shm_p;
+int *shm_px;
+int *shm_py;
 //打开触摸屏文件
 void open_file();
 

@@ -14,18 +14,20 @@
 #include "own_side.h"
 #include "enemy.h"
 #define IPC_PATH ("./")
-#define IPC_CODE (20230826)
+#define IPC_CODE1 (20230826)
+#define IPC_CODE2 (20230904)
 int shmid;
 int main()
 { 
     // 创建System V IPC设施的key
-    key_t key = ftok(IPC_PATH,IPC_CODE);
-
+    key_t key1 = ftok(IPC_PATH,IPC_CODE1);
+    key_t key2 = ftok(IPC_PATH,IPC_CODE2);
     // 创建或打开一个共享内存
-    int shm_id = shmget(key,128,IPC_CREAT|0600);
-
+    int shm_id1 = shmget(key1,128,IPC_CREAT|0600);
+    int shm_id2 = shmget(key2,128,IPC_CREAT|0600);
     // 映射共享内存
-    shm_p = shmat(shm_id,NULL,0);
+    shm_px = shmat(shm_id1,NULL,0);
+    shm_py = shmat(shm_id2,NULL,0);
     //主界面
     MAIN:
     Main_Interface();
@@ -87,7 +89,8 @@ int main()
                     draw_picture(0,190,"./ourair.bmp");
                     while (real_time_location())
                     {
-                        *shm_p=end_y;
+                        *shm_py=end_y;
+                        *shm_px=end_x;
                         //清除初始位置的飞机
                         draw_picture(0,190,"./black.bmp");
                         int status;
@@ -149,9 +152,10 @@ int main()
         
     }
     // 解除映射
-    shmdt(shm_p);
-
+    shmdt(shm_px);
+    shmdt(shm_py);
     // 关掉
-    shmctl(shm_id,IPC_RMID,NULL);
+    shmctl(shm_id1,IPC_RMID,NULL);
+    shmctl(shm_id2,IPC_RMID,NULL);
     return 0;
 }

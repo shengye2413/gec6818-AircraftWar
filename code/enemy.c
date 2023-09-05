@@ -19,10 +19,15 @@ void *enemy_air()
         //销毁原来位置的敌机
         draw_picture(x+80,j,"./enemy_black.bmp");
         //当敌机在炮弹线上
-        if(*shm_p>=j-50 && *shm_p<=j+50)
+        if(*shm_py>=j-50 && *shm_py<=j+50 && *shm_px+80<x)
         {
             draw_picture(x,j,"./enemy_end.bmp");
             break;
+        }
+        else if(*shm_px+100>x && *shm_px+100<x+120 && *shm_py+100>j && *shm_py<j+120)
+        {
+            draw_picture(x,j,"./enemy_end.bmp");
+            exit(0);
         }
         //不在炮弹线上
         else
